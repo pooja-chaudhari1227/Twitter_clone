@@ -47,7 +47,7 @@ exports.getComments = async (req, res) => {
     if (postId) whereCondition.COMMENT_POST_ID = postId;
     const comments = await Comment.findAll({
       where: whereCondition,
-      attributes: ['COMMENT_ID', 'COMMENT_CONTENT', 'createdAt'], // Added createdAt
+      attributes: ['COMMENT_ID', 'COMMENT_CONTENT', 'COMMENT_CREATED_AT', 'disabled'], 
       include: [
         { model: User, attributes: ['USER_USERNAME'] },
         { model: Post, attributes: ['POST_TITLE'] }
@@ -62,7 +62,7 @@ exports.getComments = async (req, res) => {
 exports.getCommentById = async (req, res) => {
   try {
     const comment = await Comment.findByPk(req.params.id, {
-      attributes: ['COMMENT_ID', 'COMMENT_CONTENT', 'createdAt'], // Added createdAt
+      attributes: ['COMMENT_ID', 'COMMENT_CONTENT', 'COMMENT_CREATED_AT'], // Added createdAt
       include: [
         { model: User, attributes: ['USER_USERNAME'] },
         { model: Post, attributes: ['POST_TITLE'] }

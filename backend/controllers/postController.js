@@ -62,6 +62,7 @@ exports.getPosts = async (req, res) => {
         },
         {
           model: Comment,
+          where: {disabled : 0},
           attributes: ['COMMENT_ID', 'COMMENT_CONTENT', 'COMMENT_CREATED_AT', 'COMMENT_UPDATED_AT'],
           required: false,
           include: [

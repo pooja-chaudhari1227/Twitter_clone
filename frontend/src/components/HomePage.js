@@ -169,7 +169,22 @@ function HomePage() {
         Profile
       </button>
 
-      <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Feed</h2>
+      <div style={{
+         display: 'flex',
+         justifyContent: 'center',
+        alignItems: 'center',
+        }}>
+        <img
+          src="/image/_X_.jpg"
+          alt="Small Image"
+          style={{
+          width: '50px', 
+          height: '50px', 
+          objectFit: 'cover',
+          borderRadius: '8px', 
+        }}
+        />
+      </div>
 
       {error && <p style={{ color: 'red', fontSize: '0.8rem' }}>{error}</p>}
 

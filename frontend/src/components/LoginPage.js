@@ -36,7 +36,7 @@ function LoginPage() {
         localStorage.setItem('userId', matchedUser.USER_ID);
         localStorage.setItem('username', matchedUser.USER_USERNAME);
 
-        alert('Login successful!');
+        // alert('Login successful!');
         navigate('/home');
       } else {
         setError('Invalid username or password');

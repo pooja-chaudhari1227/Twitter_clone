@@ -117,16 +117,16 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
       {Array.isArray(comments) && comments.length > 0 ? (
         comments.map((comment) => {
           const username = comment.User?.USER_USERNAME || "Anonymous";
-          const createdAt =
-            comment.createdAt && !isNaN(new Date(comment.createdAt))
-              ? new Date(comment.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              : "Unknown Date";
+          // const createdAt =
+            // comment.createdAt && !isNaN(new Date(comment.createdAt))
+            //   ? new Date(comment.createdAt).toLocaleDateString("en-US", {
+            //       year: "numeric",
+            //       month: "short",
+            //       day: "numeric",
+            //       hour: "2-digit",
+            //       minute: "2-digit",
+            //     })
+            //   : "Unknown Date";
           const canEdit = currentUser && currentUser === username;
 
           return (
@@ -225,7 +225,7 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
                     {comment.COMMENT_CONTENT}
                   </p>
                   <p style={{ fontSize: "0.6rem", color: "#aaa", margin: "0" }}>
-                    <strong>Date:</strong> {createdAt}
+                    {/* <strong>Date:</strong> {createdAt} */}
                   </p>
                   {canEdit && (
                     <div

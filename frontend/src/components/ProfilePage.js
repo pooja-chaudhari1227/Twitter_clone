@@ -51,9 +51,6 @@ function ProfilePage() {
   }, [userId]);
 
   const deletePost = (postId) => {
-    // const confirmDelete = window.confirm('Are you sure you want to delete this post?');
-    // if (!confirmDelete) return;
-
     fetch(`http://localhost:3000/api/posts/${postId}`, {
       method: 'DELETE',
     })
@@ -98,24 +95,24 @@ function ProfilePage() {
       backgroundColor: '#000',
       color: '#fff',
       minHeight: '100vh',
-      maxWidth: '900px',
+      maxWidth: '100vw',
       margin: '0 auto',
       fontFamily: 'Arial, sans-serif',
     }}>
       <div style={{
-         display: 'flex',
-         justifyContent: 'center',
+        display: 'flex',
+        justifyContent: 'center',
         alignItems: 'center',
-        }}>
+      }}>
         <img
           src="/image/_X_.jpg"
           alt="Small Image"
           style={{
-          width: '50px', // Adjust size as needed
-          height: '50px', // Adjust size as needed
-          objectFit: 'cover', // Ensures image scales nicely
-          borderRadius: '8px', // Optional: adds rounded corners
-        }}
+            width: '50px',
+            height: '50px',
+            objectFit: 'cover',
+            borderRadius: '8px',
+          }}
         />
       </div>
       <h2>Your Profile</h2>
@@ -153,11 +150,11 @@ function ProfilePage() {
                 style={{
                   marginRight: '10px',
                   padding: '6px 12px',
-                  backgroundColor: '#ffc107',
+                  backgroundColor: 'rgb(76, 175, 80)',
                   border: 'none',
                   borderRadius: '6px',
                   cursor: 'pointer',
-                  color: '#000',
+                  color: 'white',
                 }}
               >
                 Edit
@@ -191,8 +188,12 @@ function ProfilePage() {
           borderRadius: '8px',
           cursor: 'pointer',
           fontSize: '1rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
         }}
       >
+        <span role="img" aria-label="home">🏠</span>
         Back to Home
       </button>
     </div>

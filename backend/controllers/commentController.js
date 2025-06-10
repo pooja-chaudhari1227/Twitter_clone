@@ -8,7 +8,8 @@ exports.validateComment = [
   body('content')
     .trim()
     .notEmpty()
-    .withMessage('Content is required')
+    .isLength({ min: 2, max: 200 })
+    .withMessage('Content must be in between 2 and 200 characters')
     .escape(),
   body('userId')
     .notEmpty()

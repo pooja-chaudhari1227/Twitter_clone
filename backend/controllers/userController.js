@@ -7,8 +7,8 @@ exports.validateUser = [
     .trim()
     .notEmpty()
     .withMessage('Username is required')
-    .isLength({ max: 255 })
-    .withMessage('Username must be less than 255 characters')
+    .isLength({ min: 2, max: 50 })
+    .withMessage('Username must be in between 1 and 255 characters')
     .escape(),
   body('email')
     .trim()
@@ -22,6 +22,13 @@ exports.validateUser = [
     .withMessage('Password is required')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters')
+    .matches(/(?=.*[A-Z])/)
+    .withMessage('Password must contain at least one uppercase letter')
+    .matches(/(\d.*){3,}/)
+    .withMessage('Password must contain at least three digits')
+    .matches(/[\W_]/)
+    .withMessage('Password must contain at least one special character')
+    .escape(),
 ];
 
 exports.createUser = async (req, res) => {

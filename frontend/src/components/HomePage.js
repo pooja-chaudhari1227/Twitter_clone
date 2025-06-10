@@ -15,17 +15,25 @@ function HomePage() {
   const [newPost, setNewPost] = useState({ title: '', content: '' });
   const [postError, setPostError] = useState('');
   const [deleted, setDeleted] = useState(false);
-  const [error, setError] = useState(''); // For general errors
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
+  // Redirect if not logged in
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      navigate('/login');
+    }
+  }, []);
+
   const toggleDeleted = () => {
-    setDeleted((prev) => !prev); // Toggle deleted state to trigger re-render
+    setDeleted((prev) => !prev);
   };
 
   useEffect(() => {
     fetchPosts();
-  }, [deleted]); // Re-fetch posts when a comment is deleted
+  }, [deleted]);
 
   const fetchPosts = async () => {
     try {
@@ -49,7 +57,7 @@ function HomePage() {
 
   const handleCommentChange = (postId, value) => {
     setNewComments((prev) => ({ ...prev, [postId]: value }));
-    setError(''); // Clear error on change
+    setError('');
   };
 
   const handleCommentSubmit = async (postId) => {
@@ -93,7 +101,7 @@ function HomePage() {
 
   const handleNewPostChange = (e) => {
     setNewPost((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    setPostError(''); // Clear error on change
+    setPostError('');
   };
 
   const handlePostSubmit = async () => {
@@ -133,6 +141,11 @@ function HomePage() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userId');
+    navigate('/login');
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -150,65 +163,108 @@ function HomePage() {
         position: 'relative',
       }}
     >
-      <button
-        onClick={() => navigate('/profile')}
+      {/* Top Bar with Profile and Logout Buttons */}
+      <div
         style={{
           position: 'fixed',
           top: '20px',
-          right: '20px',
-          backgroundColor: '#007bff',
-          border: 'none',
-          borderRadius: '8px',
-          padding: '8px 16px',
-          color: 'white',
-          cursor: 'pointer',
-          fontWeight: 'bold',
+          left: '0',
+          right: '0',
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '0 20px',
           zIndex: 1001,
         }}
       >
-        Profile
-      </button>
+        {/* Profile Button */}
+        <button
+          onClick={() => navigate('/profile')}
+          style={{
+            backgroundColor: '#007bff',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '8px 16px',
+            color: 'white',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          aria-label="Go to profile"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            fill="white"
+          >
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+          </svg>
+        </button>
 
-      <div style={{
-         display: 'flex',
-         justifyContent: 'center',
-        alignItems: 'center',
-        }}>
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          style={{
+            backgroundColor: '#dc3545',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '8px 16px',
+            color: 'white',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+          }}
+          aria-label="Logout"
+        >
+          Logout
+        </button>
+      </div>
+
+      {/* Centered Logo or Image */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <img
           src="/image/_X_.jpg"
           alt="Small Image"
           style={{
-          width: '50px', 
-          height: '50px', 
-          objectFit: 'cover',
-          borderRadius: '8px', 
-        }}
+            width: '50px',
+            height: '50px',
+            objectFit: 'cover',
+            borderRadius: '8px',
+          }}
         />
       </div>
 
+      {/* Error Message */}
       {error && <p style={{ color: 'red', fontSize: '0.8rem' }}>{error}</p>}
 
+      {/* Posts */}
       {loading ? (
         <p>Loading posts...</p>
       ) : posts.length === 0 ? (
         <p>No posts available</p>
       ) : (
-        posts.map((post) => (
-          <PostCard
-            key={post.POST_ID}
-            post={post}
-            commentValue={newComments[post.POST_ID] || ''}
-            commentLoading={commentLoading[post.POST_ID]}
-            onCommentChange={handleCommentChange}
-            onCommentSubmit={handleCommentSubmit}
-            fetchPosts={fetchPosts}
-            toggleDeleted={toggleDeleted}
-          />
-        ))
+        [...posts]
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          .map((post) => (
+            <PostCard
+              key={post.POST_ID}
+              post={post}
+              commentValue={newComments[post.POST_ID] || ''}
+              commentLoading={commentLoading[post.POST_ID]}
+              onCommentChange={handleCommentChange}
+              onCommentSubmit={handleCommentSubmit}
+              fetchPosts={fetchPosts}
+              toggleDeleted={toggleDeleted}
+            />
+          ))
       )}
 
+      {/* New Post Button */}
       <NewPostButton onClick={() => setShowModal(true)} />
 
+      {/* New Post Modal */}
       {showModal && (
         <NewPostModal
           newPost={newPost}

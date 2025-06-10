@@ -14,7 +14,7 @@ function RegisterPage() {
     setError("");
 
     const payload = { username, email, password };
-    console.log("Sending payload:", payload); // Debug: Log payload before sending
+    console.log("Sending payload:", payload);
 
     try {
       const response = await fetch("http://localhost:3000/api/users", {
@@ -24,7 +24,7 @@ function RegisterPage() {
       });
 
       const data = await response.json();
-      console.log("Server response:", data); // Debug: Log server response
+      console.log("Server response:", data);
 
       if (!response.ok) {
         setError(data.error || "Registration failed");
@@ -32,7 +32,7 @@ function RegisterPage() {
         navigate("/login");
       }
     } catch (err) {
-      console.error("Fetch error:", err); // Debug: Log fetch error
+      console.error("Fetch error:", err);
       setError("Could not connect to server.");
     }
   };
@@ -47,33 +47,46 @@ function RegisterPage() {
         background: "black",
         color: "white",
         display: "flex",
-        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         padding: "20px",
       }}
     >
-      <motion.h2
-        initial={{ y: -30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        style={{ marginBottom: "20px", fontSize: "2rem" }}
-      >
-        Create Your Account
-      </motion.h2>
-
       <motion.form
         onSubmit={handleSubmit}
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.4 }}
         style={{
+          backgroundColor: "#1e1e1e",
+          padding: "30px",
+          borderRadius: "12px",
+          width: "100%",
+          maxWidth: "400px",
+          boxShadow: "0 0 10px rgba(255,255,255,0.1)",
           display: "flex",
           flexDirection: "column",
-          width: "300px",
           gap: "1rem",
         }}
       >
+        {/* Added image at the top */}
+        <img
+          src="/image/_X_.jpg"
+          alt="Register"
+          style={{
+            width: "80px",
+            height: "80px",
+            objectFit: "cover",
+            alignSelf: "center",
+            marginBottom: "1rem",
+            borderRadius: "50%", // Circular image
+          }}
+        />
+
+        <h2 style={{ textAlign: "center", marginBottom: "10px" }}>
+          Create Your Account
+        </h2>
+
         <input
           type="text"
           placeholder="Username"
@@ -99,19 +112,23 @@ function RegisterPage() {
           style={inputStyle}
           autoComplete="new-password"
         />
+
+        {error && <p style={{ color: "tomato" }}>{error}</p>}
+
         <button type="submit" style={buttonStyle}>
           Register
         </button>
 
-        {error && <p style={{ color: "tomato" }}>{error}</p>}
+        <p style={{ marginTop: "1rem", textAlign: "center" }}>
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            style={{ color: "#4facfe", textDecoration: "underline" }}
+          >
+            Login
+          </Link>
+        </p>
       </motion.form>
-
-      <p style={{ marginTop: "1rem" }}>
-        Already have an account?{" "}
-        <Link to="/login" style={{ color: "#4facfe", textDecoration: "underline" }}>
-          Login
-        </Link>
-      </p>
     </motion.div>
   );
 }
@@ -122,6 +139,8 @@ const inputStyle = {
   border: "none",
   outline: "none",
   fontSize: "1rem",
+  background: "#2c2c2c",
+  color: "white",
 };
 
 const buttonStyle = {

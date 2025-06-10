@@ -8,7 +8,7 @@ exports.validatePost = [
     .trim()
     .notEmpty()
     .withMessage('Title is required')
-    .isLength({ min: 1, max: 255 })
+    .isLength({ min: 2, max: 280 })
     .withMessage('Title must be between 1 and 255 characters')
     .escape(),
   body('content')
@@ -54,6 +54,7 @@ exports.getPosts = async (req, res) => {
 
     const posts = await Post.findAll({
       where: whereCondition,
+      order: [['POST_CREATED_AT', 'DESC']], // <-- Order by created date descending
       include: [
         {
           model: User,
@@ -62,7 +63,7 @@ exports.getPosts = async (req, res) => {
         },
         {
           model: Comment,
-          where: {disabled : 0},
+          where: { disabled: 0 },
           attributes: ['COMMENT_ID', 'COMMENT_CONTENT', 'COMMENT_CREATED_AT', 'COMMENT_UPDATED_AT'],
           required: false,
           include: [
@@ -75,6 +76,7 @@ exports.getPosts = async (req, res) => {
         }
       ]
     });
+
     console.log('Posts with users and comments:', JSON.stringify(posts, null, 2));
     res.status(200).json(posts);
   } catch (error) {
@@ -82,6 +84,7 @@ exports.getPosts = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
 
 exports.getPostById = async (req, res) => {
   try {

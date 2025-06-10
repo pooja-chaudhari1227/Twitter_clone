@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 
 function CommentInput({ postId, value, loading, onChange, onSubmit }) {
+  
+  
   return (
     <motion.div
       initial={{ y: 10, opacity: 0 }}

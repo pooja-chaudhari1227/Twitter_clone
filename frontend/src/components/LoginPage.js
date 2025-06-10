@@ -32,11 +32,8 @@ function LoginPage() {
       );
 
       if (matchedUser) {
-        // ✅ Store user info in localStorage
         localStorage.setItem('userId', matchedUser.USER_ID);
         localStorage.setItem('username', matchedUser.USER_USERNAME);
-
-        // alert('Login successful!');
         navigate('/home');
       } else {
         setError('Invalid username or password');
@@ -76,6 +73,23 @@ function LoginPage() {
           boxShadow: '0 0 10px rgba(255,255,255,0.1)'
         }}
       >
+        {/* 🔽 Image added here */}
+        <img
+          src="/image/_X_.jpg"
+          alt="Login"
+          style={{
+            width: '80px',
+            height: '80px',
+            objectFit: 'cover',
+            alignSelf: 'center',
+            marginBottom: '1rem',
+            borderRadius: '50%',
+            display: 'block',
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          }}
+        />
+
         <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Login</h2>
 
         <label>Username</label>
@@ -85,15 +99,7 @@ function LoginPage() {
           value={formData.username}
           onChange={handleChange}
           required
-          style={{
-            width: '100%',
-            padding: '10px',
-            margin: '10px 0',
-            borderRadius: '6px',
-            border: 'none',
-            background: '#2c2c2c',
-            color: 'white'
-          }}
+          style={inputStyle}
         />
 
         <label>Password</label>
@@ -103,37 +109,39 @@ function LoginPage() {
           value={formData.password}
           onChange={handleChange}
           required
-          style={{
-            width: '100%',
-            padding: '10px',
-            margin: '10px 0',
-            borderRadius: '6px',
-            border: 'none',
-            background: '#2c2c2c',
-            color: 'white'
-          }}
+          style={inputStyle}
         />
 
         {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
+        <p></p>
 
-        <button
-          type="submit"
-          style={{
-            width: '100%',
-            padding: '12px',
-            backgroundColor: 'white',
-            color: '#4facfe',
-            fontWeight: 'bold',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer'
-          }}
-        >
+        <button type="submit" style={buttonStyle}>
           Login
         </button>
       </motion.form>
     </motion.div>
   );
 }
+
+const inputStyle = {
+  width: '95%',
+  padding: '10px',
+  margin: '10px 0',
+  borderRadius: '6px',
+  border: 'none',
+  background: '#2c2c2c',
+  color: 'white'
+};
+
+const buttonStyle = {
+  width: '100%',
+  padding: '12px',
+  backgroundColor: 'white',
+  color: '#4facfe',
+  fontWeight: 'bold',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'pointer'
+};
 
 export default LoginPage;

@@ -1,4 +1,5 @@
 function NewPostModal({ newPost, onChange, onSubmit, onClose, error }) {
+  
   return (
     <div
       style={{

@@ -23,17 +23,17 @@ function LoginPage() {
     setError('');
 
     try {
-      const res = await fetch('http://localhost:3000/api/users');
+      const res = await fetch('http://13.202.22.78:3000/api/users');
       const users = await res.json();
 
-      const matchedUser = users.find(user =>
+      const ExistUser = users.find(user =>
         user.USER_USERNAME === formData.username &&
         user.USER_PASSWORD === formData.password
       );
 
-      if (matchedUser) {
-        localStorage.setItem('userId', matchedUser.USER_ID);
-        localStorage.setItem('username', matchedUser.USER_USERNAME);
+      if (ExistUser) {
+        localStorage.setItem('userId', ExistUser.USER_ID);
+        localStorage.setItem('username', ExistUser.USER_USERNAME);
         navigate('/home');
       } else {
         setError('Invalid username or password');
@@ -73,7 +73,6 @@ function LoginPage() {
           boxShadow: '0 0 10px rgba(255,255,255,0.1)'
         }}
       >
-        {/* 🔽 Image added here */}
         <img
           src="/image/_X_.jpg"
           alt="Login"

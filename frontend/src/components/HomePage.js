@@ -16,7 +16,6 @@ function HomePage() {
   const [postError, setPostError] = useState('');
   const [deleted, setDeleted] = useState(false);
   const [error, setError] = useState('');
-
   const navigate = useNavigate();
 
   // Redirect if not logged in
@@ -39,7 +38,7 @@ function HomePage() {
     try {
       setLoading(true);
       setError('');
-      const res = await fetch('http://localhost:3000/api/posts', {
+      const res = await fetch('http://13.202.22.78:3000/api/posts', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -56,7 +55,9 @@ function HomePage() {
   };
 
   const handleCommentChange = (postId, value) => {
-    setNewComments((prev) => ({ ...prev, [postId]: value }));
+    const updatedComments = { ...newComments };
+    updatedComments[postId] = value;
+    setNewComments(updatedComments);
     setError('');
   };
 
@@ -77,7 +78,7 @@ function HomePage() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/comments', {
+      const response = await fetch('http://13.202.22.78:3000/api/comments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +120,7 @@ function HomePage() {
     const requestBody = { ...newPost, userId };
 
     try {
-      const res = await fetch('http://localhost:3000/api/posts', {
+      const res = await fetch('http://13.202.22.78:3000/api/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -163,7 +164,6 @@ function HomePage() {
         position: 'relative',
       }}
     >
-      {/* Top Bar with Profile and Logout Buttons */}
       <div
         style={{
           position: 'fixed',
@@ -176,7 +176,6 @@ function HomePage() {
           zIndex: 1001,
         }}
       >
-        {/* Profile Button */}
         <button
           onClick={() => navigate('/profile')}
           style={{
@@ -204,7 +203,6 @@ function HomePage() {
           </svg>
         </button>
 
-        {/* Logout Button */}
         <button
           onClick={handleLogout}
           style={{
@@ -222,7 +220,6 @@ function HomePage() {
         </button>
       </div>
 
-      {/* Centered Logo or Image */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <img
           src="/image/_X_.jpg"
@@ -236,10 +233,8 @@ function HomePage() {
         />
       </div>
 
-      {/* Error Message */}
       {error && <p style={{ color: 'red', fontSize: '0.8rem' }}>{error}</p>}
 
-      {/* Posts */}
       {loading ? (
         <p>Loading posts...</p>
       ) : posts.length === 0 ? (
@@ -256,15 +251,12 @@ function HomePage() {
               onCommentChange={handleCommentChange}
               onCommentSubmit={handleCommentSubmit}
               fetchPosts={fetchPosts}
-              toggleDeleted={toggleDeleted}
+              // toggleDeleted={toggleDeleted}
             />
           ))
       )}
 
-      {/* New Post Button */}
       <NewPostButton onClick={() => setShowModal(true)} />
-
-      {/* New Post Modal */}
       {showModal && (
         <NewPostModal
           newPost={newPost}

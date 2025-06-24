@@ -1,5 +1,3 @@
-// src/components/ProfilePage.js
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +19,7 @@ function ProfilePage() {
       return;
     }
 
-    fetch(`http://localhost:3000/api/users/${userId}`)
+    fetch(`http://13.202.22.78:3000/api/users/${userId}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch user data');
         return res.json();
@@ -35,7 +33,7 @@ function ProfilePage() {
         setLoadingUser(false);
       });
 
-    fetch(`http://localhost:3000/api/posts?userId=${userId}`)
+    fetch(`http://13.202.22.78:3000/api/posts?userId=${userId}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch posts');
         return res.json();
@@ -51,7 +49,7 @@ function ProfilePage() {
   }, [userId]);
 
   const deletePost = (postId) => {
-    fetch(`http://localhost:3000/api/posts/${postId}`, {
+    fetch(`http://13.202.22.78:3000/api/posts/${postId}`, {
       method: 'DELETE',
     })
       .then((res) => {

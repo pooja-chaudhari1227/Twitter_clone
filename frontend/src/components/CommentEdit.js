@@ -8,10 +8,6 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
   const [error, setError] = useState(null);
   const currentUser = localStorage.getItem("username");
 
-  useEffect(() => {
-    console.log("Comments:", comments); // Debug
-  }, [comments]);
-
   const handleEditComment = async (commentId) => {
     if (!currentUser) {
       setError("You must be logged in to edit a comment.");
@@ -27,7 +23,7 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
     setError(null);
     try {
       const response = await fetch(
-        `http://localhost:3000/api/comments/${commentId}`,
+        `http://13.202.22.78:3000/api/comments/${commentId}`,
         {
           method: "PUT",
           headers: {
@@ -40,15 +36,11 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          response.status === 404
-            ? "Comment not found"
-            : response.status === 403
-            ? "You are not authorized to edit this comment"
-            : errorData.error || "Failed to edit comment"
+          response.status === 404 ? "Comment not found" : 
+          response.status === 403 ? "You are not authorized to edit this comment" : errorData.error || "Failed to edit comment"
         );
       }
-
-      await fetchPosts(); // Refresh posts/comments after edit
+      await fetchPosts(); 
       setEditing((prev) => ({ ...prev, [commentId]: false }));
       setEditContent((prev) => ({ ...prev, [commentId]: "" }));
     } catch (err) {
@@ -67,7 +59,7 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
     setError(null);
     try {
       const response = await fetch(
-        `http://localhost:3000/api/comments/${commentId}`,
+        `http://13.202.22.78:3000/api/comments/${commentId}`,
         {
           method: "DELETE",
           headers: {
@@ -80,16 +72,13 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          response.status === 404
-            ? "Comment not found"
-            : response.status === 403
-            ? "You are not authorized to delete this comment"
-            : errorData.error || "Failed to delete comment"
+          response.status === 404 ? "Comment not found": 
+          response.status === 403 ? "You are not authorized to delete this comment": errorData.error || "Failed to delete comment"
         );
       }
 
-      await fetchPosts(); // Refresh posts/comments after delete
-      toggleDeleted(); // Call toggleDeleted to notify parent
+      await fetchPosts(); 
+      toggleDeleted(); 
       setDeleting((prev) => ({ ...prev, [commentId]: false }));
     } catch (err) {
       console.error("Delete error:", err.message);
@@ -150,14 +139,9 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
                   }}
                 >
                   <textarea
-                    value={
-                      editContent[comment.COMMENT_ID] || comment.COMMENT_CONTENT
-                    }
+                    value={ editContent[comment.COMMENT_ID] || comment.COMMENT_CONTENT }
                     onChange={(e) =>
-                      setEditContent((prev) => ({
-                        ...prev,
-                        [comment.COMMENT_ID]: e.target.value,
-                      }))
+                      setEditContent((prev) => ({ ...prev,[comment.COMMENT_ID]: e.target.value,}))
                     }
                     style={{
                       width: "100%",
@@ -190,10 +174,7 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
                     </button>
                     <button
                       onClick={() =>
-                        setEditing((prev) => ({
-                          ...prev,
-                          [comment.COMMENT_ID]: false,
-                        }))
+                        setEditing((prev) => ({...prev,[comment.COMMENT_ID]: false,}))
                       }
                       style={{
                         backgroundColor: "#888",
@@ -215,7 +196,6 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
                     {comment.COMMENT_CONTENT}
                   </p>
                   <p style={{ fontSize: "0.6rem", color: "#aaa", margin: "0" }}>
-                    {/* <strong>Date:</strong> {createdAt} */}
                   </p>
                   {canEdit && (
                     <div
@@ -227,10 +207,7 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
                     >
                       <button
                         onClick={() =>
-                          startEditing(
-                            comment.COMMENT_ID,
-                            comment.COMMENT_CONTENT
-                          )
+                          startEditing(comment.COMMENT_ID, comment.COMMENT_CONTENT)
                         }
                         disabled={deleting[comment.COMMENT_ID]}
                         style={{
@@ -262,9 +239,7 @@ function CommentEdit({ comments, fetchPosts, toggleDeleted, postId }) {
                           fontSize: "0.7rem",
                         }}
                       >
-                        {deleting[comment.COMMENT_ID]
-                          ? "Deleting..."
-                          : "Delete"}
+                        {deleting[comment.COMMENT_ID] ? "Deleting..." : "Delete"}
                       </button>
                     </div>
                   )}

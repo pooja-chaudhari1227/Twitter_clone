@@ -12,14 +12,13 @@ function EditPostPage() {
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/posts/${id}`)
+    fetch(`http://13.202.22.78:3000/api/posts/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch post data');
         return res.json();
       })
       .then((data) => {
-        // Check if the logged-in user owns the post
-        const postUserId = data.userId || data.POST_USER_ID; // support both fields
+        const postUserId = data.userId || data.POST_USER_ID;
         if (parseInt(userId, 10) !== postUserId) {
           throw new Error('Unauthorized to edit this post');
         }
@@ -40,7 +39,7 @@ function EditPostPage() {
 
   const savePost = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:3000/api/posts/${id}`, {
+    fetch(`http://13.202.22.78:3000/api/posts/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

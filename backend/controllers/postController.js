@@ -8,7 +8,7 @@ exports.validatePost = [
     .trim()
     .notEmpty()
     .withMessage('Title is required')
-    .isLength({ min: 2, max: 280 })
+    .isLength({ min: 5, max: 280 })
     .withMessage('Title must be between 1 and 255 characters')
     .escape(),
   body('content')
@@ -45,16 +45,14 @@ exports.createPost = async (req, res) => {
 exports.getPosts = async (req, res) => {
   try {
     const { userId } = req.query;
-    const whereCondition = {
-      disabled: 0
-    };
+    const whereCondition = { disabled: 0 };
     if (userId) {
       whereCondition.POST_USER_ID = userId;
     }
 
     const posts = await Post.findAll({
       where: whereCondition,
-      order: [['POST_CREATED_AT', 'DESC']], // <-- Order by created date descending
+      order: [['POST_CREATED_AT', 'DESC']],
       include: [
         {
           model: User,
@@ -126,9 +124,7 @@ exports.deletePost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ error: 'Post not found' });
     }
-    await post.update({
-      disabled: 1
-    });
+    await post.update({ disabled: 1 });
     res.status(200).json({ message: 'Post deleted successfully' });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -152,25 +148,3 @@ exports.validateComment = [
     .isInt()
     .withMessage('Post ID must be an integer')
 ];
-
-exports.createComment = async (req, res) => {
-  try {
-    console.log('Comment request body:', JSON.stringify(req.body, null, 2));
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      console.log('Validation errors:', errors.array());
-      return res.status(400).json({ error: `Validation failed: ${errors.array().map(e => e.msg).join(', ')}` });
-    }
-
-    const { content, userId, postId } = req.body;
-    const comment = await Comment.create({
-      COMMENT_CONTENT: content,
-      COMMENT_USER_ID: userId,
-      COMMENT_POST_ID: postId
-    });
-    res.status(201).json({ message: 'Comment created successfully', comment });
-  } catch (error) {
-    console.error('Error creating comment:', error.message, error.stack);
-    res.status(400).json({ error: error.message });
-  }
-};

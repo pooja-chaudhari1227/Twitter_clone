@@ -34,7 +34,7 @@ const User = sequelize.define('User', {
     defaultValue: 0
   }
 }, {
-  tableName: 'USERS', // FIXED: Match actual table name in lowercase
+  tableName: 'USERS', 
   timestamps: true,
   createdAt: 'USER_CREATED_AT',
   updatedAt: 'USER_UPDATED_AT'

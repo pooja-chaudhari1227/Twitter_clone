@@ -17,7 +17,7 @@ function RegisterPage() {
     console.log("Sending payload:", payload);
 
     try {
-      const response = await fetch("http://localhost:3000/api/users", {
+      const response = await fetch("http://13.202.22.78:3000/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

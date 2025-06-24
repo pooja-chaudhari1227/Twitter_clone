@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const cors = require('cors');  // <-- import cors here
+const cors = require('cors');  
 const sequelize = require('./config/db');
 const userRoutes = require('./routes/userRoute');
 const postRoutes = require('./routes/postRoute');
@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3001', // allow frontend origin
+  origin: 'http://13.202.22.78:3001', 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -26,7 +26,7 @@ const PORT = process.env.PORT || 3000;
 
 sequelize.sync({alter:true})
   .then(() => {
-    app.listen(PORT, () => {
+    app.listen(PORT,'0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
